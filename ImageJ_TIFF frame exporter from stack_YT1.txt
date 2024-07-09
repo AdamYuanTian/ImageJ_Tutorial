@@ -1,0 +1,11 @@
+dir = getDirectory("image");
+title = getTitle();
+
+for(i = 1; i<=nSlices; i++){
+	run("Duplicate...", "duplicate range=i-i");
+	saveAs("Tiff", dir + title + "_" + i);
+	run("Close");
+}
+
+	
+

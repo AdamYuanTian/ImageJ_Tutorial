@@ -1,0 +1,23 @@
+//I didn't add function for changing the format of the images (16-bit or RGB), you can add it based on need
+
+SourceDir = getDirectory("Choose file directory.");
+FolderList = getFileList(SourceDir);
+
+for (k=0; k<FolderList.length; k++){
+
+filepath=SourceDir+FolderList[k];
+run("Bio-Formats Importer", "  open=filepath color_mode=Default view=Hyperstack stack_order=XYCZT");
+
+dir = getDirectory("image");
+title = getTitle();
+run("Z Project...", "projection=[Max Intensity]");
+selectWindow(title);
+close();
+
+for(i = 1; i<=nSlices; i++){
+	run("Duplicate...", "duplicate channels=i-i");
+	saveAs("PNG", dir + title + "_" + i); //You can change PNG to Tiff if you want to save as a different format
+	run("Close");
+}
+run("Close");
+}

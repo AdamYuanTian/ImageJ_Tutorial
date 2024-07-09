@@ -1,0 +1,8 @@
+//Please go to Analyze->Set Measurements...->Check Min&max gray value/Mean gray value/Modal gray value
+
+for(i = 1; i<=nSlices; i++){
+	setSlice(i);
+	run("Measure");
+}
+
+

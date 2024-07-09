@@ -1,0 +1,12 @@
+SourceDir = getDirectory("Choose file directory.");
+FolderList = getFileList(SourceDir);
+
+for (k=0; k<FolderList.length; k++){
+
+print(FolderList[k]);
+
+//X is the character of interest
+if (indexOf(FolderList[k], "X")>=0){
+print("X");
+}
+}
