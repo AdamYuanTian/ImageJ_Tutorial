@@ -1,0 +1,42 @@
+Macro->Command->Search macro for certain function
+Macro->Edit->Close and run macro
+Close all windows before running the macro
+
+int i;
+SaveNext_Images("C:\USERS\YUAN\DESKTOP", 3, "LargeImage",0); //Set directory and filename prefilx
+
+for(i = 0; i < 2; i = i + 1)
+
+	{
+
+	//Phase contrast large image
+	Stg_Light_SetRemoteSwitch("Illuminator-DIA", 1); //turn on the bright light
+	Stg_Filter_SetPosition("Turret1",0); //Change to PC filter
+	Stg_Light_SetState("Illuminator-DIA", 1); //clear bright light path
+	Stg_Light_SetVoltage("Illuminator-DIA", 0.500000); //set bright light power
+	StgMoveZ(1000,0); //move to 1000 at z direction or wherever is in focus
+	Stg_LargeImageScanArea(-20493.000,586.00000,3197.70000,-5000.0000,0,10,0,0,NULL); //scan large image (left,right,top,bottom,0,overlay%,0,0,NULL)
+	Stg_Light_SetState("Illuminator-DIA", 0); //shut bright light path
+	Stg_Light_SetRemoteSwitch("Illuminator-DIA", 0); //turn off the bright light
+	
+	
+	//Fluorescent large image
+	Stg_SetShutterStateEx("EPI", 1); //turn on EPI shutter
+	Stg_Filter_SetPosition("Turret1", 2); //Change to FITC
+	CameraSet_Exposure(1, 30.000000); //Set exposure time
+	Stg_LargeImageScanArea(1330.00000,5300.00000,3535.00000,-2567.0000,0,10,0,0,NULL); //scan large image
+	
+	Stg_Filter_SetPosition("Turret1", 3); //Change to TRITC
+	CameraSet_Exposure(1, 50.000000); //Set exposure time
+	CameraCmd_AutoExposure(); //Auto exposure
+	Stg_LargeImageScanArea(1330.00000,5300.00000,3535.00000,-2567.0000,0,10,0,0,NULL); //scan large image
+	Stg_SetShutterStateEx("EPI", 0); //turn off EPI shutter
+	
+	
+	//Autosave file and close window
+	ActivateDocument("Large Image"); //Select the captured large image
+	ImageSaveNext(); //Save the file and automatically update file number
+	CloseCurrentDocument(QUERYSAVE_ASK); //Close the file
+
+	Wait(10.00000); //set interval in seconds
+	}
